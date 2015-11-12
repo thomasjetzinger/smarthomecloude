@@ -40,14 +40,15 @@ namespace ConnectTheDotsIoT
             };
 
 
-            ctdHelper = new ConnectTheDotsHelper(serviceBusNamespace: "smarthomecloud-ns",
+            ctdHelper = new ConnectTheDotsHelper(serviceBusNamespace: "smarthomecloud2-ns",
                     eventHubName: "ehdevices",
                     keyName: "D1",
-                    key: "3J1lMPNlLSUwimyMn1M7yRimI3Y7U7oa4K8MUOU2/xg=",
+                    key: "hmc/OlZBDYll46ZgfXAxzTZ+oj1gmXSJaqVydFBq9Bo=",
                     displayName: "RPI",
                     organization: "FH Hagenberg",
                     location: "Hagenberg",
                     sensorList: sensors);
+
 
             timer = new DispatcherTimer();
             timer.Tick += Timer_Tick;
