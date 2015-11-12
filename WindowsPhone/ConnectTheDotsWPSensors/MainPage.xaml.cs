@@ -217,14 +217,14 @@ namespace ConnectTheDotsWPSensors
             // Update ScrollViewer sizew
             this.ScrollViewer.Height = Window.Current.Bounds.Height;
 
-            ctdHelper = new ConnectTheDotsHelper(serviceBusNamespace: "smarthomecloud-ns",
-                eventHubName: "ehdevices",
-                keyName: "D1",
-                key: "3J1lMPNlLSUwimyMn1M7yRimI3Y7U7oa4K8MUOU2/xg=",
-                displayName: "RPI",
-                organization: "FH Hagenberg",
-                location: "Hagenberg",
-                sensorList: sensors);
+            ctdHelper = new ConnectTheDotsHelper(serviceBusNamespace: "smarthomecloud2-ns",
+                    eventHubName: "ehdevices",
+                    keyName: "D1",
+                    key: "hmc/OlZBDYll46ZgfXAxzTZ+oj1gmXSJaqVydFBq9Bo=",
+                    displayName: "RPI",
+                    organization: "FH Hagenberg",
+                    location: "Hagenberg",
+                    sensorList: sensors);
 
             // Get app settings
             if (!ctdHelper.localSettings.SettingsSet)
