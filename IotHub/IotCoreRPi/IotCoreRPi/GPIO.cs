@@ -10,9 +10,8 @@ namespace IotCoreRPi
     public class GPIO
     {
         private GpioPin pin;
-        private GpioPinValue pinValue;
 
-        private void InitGPIO(int pinNr, GpioPinDriveMode mode)
+        public void InitGPIO(int pinNr, GpioPinDriveMode mode)
         {
             var gpio = GpioController.GetDefault();
 
@@ -23,9 +22,15 @@ namespace IotCoreRPi
             }
 
             pin = gpio.OpenPin(pinNr);
-            pinValue = GpioPinValue.High;
-            pin.Write(pinValue);
             pin.SetDriveMode(mode);
+        }
+
+        public void SetValue(GpioPinValue value)
+        {
+            if(pin == null)
+                throw new Exception("GPIO Pin not initalized!");
+
+            pin.Write(value);
         }
     }
 
