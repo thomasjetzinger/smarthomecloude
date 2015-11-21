@@ -70,7 +70,7 @@ namespace IotCoreRPi
 
         private void Timer_Tick(object sender, object e)
         {   IotSensor sensor = sensors.Find(item => item.measurename == "Temperature");
-            sensor.value = random.Next(28, 50);
+            sensor.value = TemperatureSlider.Value;
             sensor.timecreated = DateTime.UtcNow.ToString("o");
             SendDataToAzure(sensor.ToJson());
         }
