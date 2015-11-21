@@ -28,17 +28,15 @@ namespace IotCoreRPi
     public sealed partial class MainPage : Page
     {
         private String ConnectionString { get; set; }
-
         private DispatcherTimer timer;
-
         private List<IotSensor> sensors;
-
         Random random = new Random();
-
         RPi rpi;
-
+        private bool SimulateDevice { get; set; }
         const string CMD = "#cmd:";
         const string PIN_CMD = "set_pin";
+        private SolidColorBrush redBrush = new SolidColorBrush(Windows.UI.Colors.Red);
+        private SolidColorBrush grayBrush = new SolidColorBrush(Windows.UI.Colors.LightGray);
 
 
         public MainPage()
@@ -72,7 +70,7 @@ namespace IotCoreRPi
 
         private void Timer_Tick(object sender, object e)
         {   IotSensor sensor = sensors.Find(item => item.measurename == "Temperature");
-            sensor.value = random.Next(50);
+            sensor.value = random.Next(28, 50);
             sensor.timecreated = DateTime.UtcNow.ToString("o");
             SendDataToAzure(sensor.ToJson());
         }
@@ -126,7 +124,13 @@ namespace IotCoreRPi
                                 int pinNumber = int.Parse(tokens[1]);
                                 double value = double.Parse(tokens[2]);
 
-                                rpi.SetPinValue(pinNumber, value == 1 ? GpioPinValue.High : GpioPinValue.Low);
+                                if(SimulateDevice == false)
+                                    rpi.SetPinValue(pinNumber, value == 1 ? GpioPinValue.High : GpioPinValue.Low);
+
+                                if (value == 1)
+                                    LED.Fill = redBrush;
+                                else
+                                    LED.Fill = grayBrush;
                             }
                         }
                     }
@@ -144,10 +148,13 @@ namespace IotCoreRPi
             if(RPi.IsRealDevice())
             {
                 rpi = new RPi();
+                SimulateDevice = false;
+                GpioStatus.Text = "Hello on Pi";
             }
             else
             {
-                Debug.WriteLine("Application isn't running on RPi!");
+                GpioStatus.Text = "This is no RPi";
+                SimulateDevice = true;
             }
         }
 
