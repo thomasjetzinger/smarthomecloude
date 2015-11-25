@@ -99,13 +99,14 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="GPIO.cs" />
+    <Compile Include="Communication\I2C.cs" />
+    <Compile Include="Hardware\GPIO.cs" />
     <Compile Include="IotSensor.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RPi.cs" />
+    <Compile Include="Hardware\RPi.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">

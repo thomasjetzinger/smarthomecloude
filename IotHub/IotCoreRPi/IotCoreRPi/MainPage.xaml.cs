@@ -17,6 +17,7 @@ using System.Threading.Tasks;
 using Microsoft.Azure.Devices.Client;
 using System.Diagnostics;
 using Windows.Devices.Gpio;
+using IotCoreRPi.Communication;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -38,6 +39,10 @@ namespace IotCoreRPi
         private SolidColorBrush redBrush = new SolidColorBrush(Windows.UI.Colors.Red);
         private SolidColorBrush grayBrush = new SolidColorBrush(Windows.UI.Colors.LightGray);
 
+        private static bool AlreadyRunning = false;
+        public static int I2C_Slave_Address { get; set; }
+
+        private float Temperature { get; set; }
 
         public MainPage()
         {
@@ -64,13 +69,18 @@ namespace IotCoreRPi
         {
             timer = new DispatcherTimer();
             timer.Tick += Timer_Tick;
-            timer.Interval = TimeSpan.FromMilliseconds(1000);
+            timer.Interval = TimeSpan.FromMilliseconds(60000);
             timer.Start();
         }
 
         private void Timer_Tick(object sender, object e)
         {   IotSensor sensor = sensors.Find(item => item.measurename == "Temperature");
-            sensor.value = TemperatureSlider.Value;
+
+            if (SimulateDevice)
+                sensor.value = TemperatureSlider.Value;
+            else
+                sensor.value = Temperature;
+
             sensor.timecreated = DateTime.UtcNow.ToString("o");
             SendDataToAzure(sensor.ToJson());
         }
@@ -150,6 +160,8 @@ namespace IotCoreRPi
                 rpi = new RPi();
                 SimulateDevice = false;
                 GpioStatus.Text = "Hello on Pi";
+                I2C_Slave_Address = 0x40;
+                CollectData();
             }
             else
             {
@@ -165,6 +177,31 @@ namespace IotCoreRPi
                 rpi.Init();
                 rpi.SetPinValue(RPi.LED_PIN, GpioPinValue.Low);
                 rpi.SetPinValue(RPi.START_UP_LED_PIN, GpioPinValue.High);
+            }
+        }
+
+        public void CollectData()
+        {
+            if (AlreadyRunning == false)
+            {
+                AlreadyRunning = true;
+
+                Task Task_CollectSensorData = new Task(async () =>
+                {
+                    while (true)
+                    {
+                        var Response = await I2C.WriteRead(I2C_Slave_Address, I2C.Mode.Mode0);
+
+                        // Update Temperature
+                        Temperature = (byte)Response[3];
+                        Temperature *= (((byte)Response[2]) == 0) ? -1 : 1; // Update Temperature Sign. Refer mode 0 for details.
+
+                        await Task.Delay(1000);
+                    }
+                });
+
+                Task_CollectSensorData.Start();
+                Task_CollectSensorData.Wait();
             }
         }
     }
