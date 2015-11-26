@@ -15,9 +15,9 @@ namespace SmartHomeCloudAPI.Models
         public string measurename { get; set; }
         public string message { get; set; }
         public string organization { get; set; }
-        public double tempmax { get; set; }
+        public double maxtemp { get; set; }
         public DateTime timecreated { get; set; }
         public string unitofmeasure { get; set; }
-        public double value { get; set; }
+        public double avgtemp { get; set; }
     }
 }

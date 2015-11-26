@@ -41,6 +41,21 @@ namespace SmartHomeCloudAPI.Controllers
         }
 
 
+        [HttpDelete]
+        public long DeleteSome()
+        {
+            long deletionCount = 0;
+            for(int i = 0; i < 100; i++)
+            {
+                var count = dataConnector.ClearTable();
+                if (count < 1) break;
+                deletionCount += count;
+            }
+
+            return deletionCount;
+
+        }
+
 
 
   
