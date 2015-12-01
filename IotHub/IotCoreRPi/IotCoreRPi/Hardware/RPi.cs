@@ -16,7 +16,14 @@ namespace IotCoreRPi
 
         public static bool IsRealDevice()
         {
-            return GpioController.GetDefault() != null;
+            try
+            {
+                return GpioController.GetDefault() != null;
+            }
+            catch
+            {
+                return false;
+            } 
         }
 
         public void Init()

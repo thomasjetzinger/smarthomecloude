@@ -48,7 +48,7 @@ namespace IotCoreRPi
         {
             this.InitializeComponent();
 
-            ConnectionString = "HostName=smarthomecloud.azure-devices.net;DeviceId=Rpi1;SharedAccessKey=NDTJ9dMxEGc2Qdf8RMjpDBBvTAkC3smn8VYu+h6S4iI=";
+            ConnectionString = "HostName=smarthomecloud-iothub.azure-devices.net;DeviceId=Rpi1;SharedAccessKey=8A7gT7QRZpzLSdqaVlGtgXwyQ8Jn7QRTECI+kqQsFUI=";
 
             ReceiveDataFromAzure();
 
@@ -63,18 +63,21 @@ namespace IotCoreRPi
             InitRPi();
 
             InitGPIO();
+
+            GrabDataAndSendToAzure();
         }
 
         private void InitTimer()
         {
             timer = new DispatcherTimer();
             timer.Tick += Timer_Tick;
-            timer.Interval = TimeSpan.FromMilliseconds(60000);
+            timer.Interval = TimeSpan.FromMilliseconds(1000);
             timer.Start();
         }
 
-        private void Timer_Tick(object sender, object e)
-        {   IotSensor sensor = sensors.Find(item => item.measurename == "Temperature");
+        private void GrabDataAndSendToAzure()
+        {
+            IotSensor sensor = sensors.Find(item => item.measurename == "Temperature");
 
             if (SimulateDevice)
                 sensor.value = TemperatureSlider.Value;
@@ -85,9 +88,16 @@ namespace IotCoreRPi
             SendDataToAzure(sensor.ToJson());
         }
 
+        private void Timer_Tick(object sender, object e)
+        {
+            GrabDataAndSendToAzure();
+        }
+
         private async Task SendDataToAzure(String data)
         {
             DeviceClient deviceClient = DeviceClient.CreateFromConnectionString(ConnectionString, TransportType.Http1);
+
+            Debug.WriteLine("Send to IoT Hub: " + data);
 
             var msg = new Message(Encoding.UTF8.GetBytes(data));
 
