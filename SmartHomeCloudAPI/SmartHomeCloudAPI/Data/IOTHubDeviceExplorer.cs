@@ -9,9 +9,7 @@ using System.Web;
 namespace SmartHomeCloudAPI.Data
 {
     public class IOTHubDeviceExplorer
-    {
-
-        private List<DeviceEntity> listOfDevices;
+    {       
         private RegistryManager registryManager;
         private String iotHubConnectionString;
         private int maxCountOfDevices;
@@ -20,7 +18,7 @@ namespace SmartHomeCloudAPI.Data
 
         public IOTHubDeviceExplorer(string iotHubConnenctionString, int devicesCount, string protocolGatewayName)
         {
-            this.listOfDevices = new List<DeviceEntity>();
+           
             this.iotHubConnectionString = iotHubConnenctionString;
             this.maxCountOfDevices = devicesCount;
             this.protocolGatewayHostName = protocolGatewayName;
@@ -30,6 +28,7 @@ namespace SmartHomeCloudAPI.Data
 
         public async Task<List<DeviceEntity>> GetDevices()
         {
+            var listOfDevices = new List<DeviceEntity>();
             try
             {
                 DeviceEntity deviceEntity;

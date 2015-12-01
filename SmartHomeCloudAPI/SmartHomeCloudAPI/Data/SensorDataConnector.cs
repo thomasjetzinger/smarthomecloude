@@ -42,5 +42,31 @@ namespace SmartHomeCloudAPI.Data
             return table.ExecuteQuerySegmented(query, token);
 
         }
+
+        public long ClearTable()
+        {
+            long deletionCount = 0;
+            // Construct the query operation for all customer entities where PartitionKey="Smith".
+            var list = new List<string>();
+            list.Add("PartitionKey");
+            list.Add("RowKey");
+            TableQuery<SensorValueEntity> query = new TableQuery<SensorValueEntity>().Select(list).Take(100);
+            var results = table.ExecuteQuery(query);
+            
+            if (results.Count() < 1)
+                return deletionCount;
+            foreach(var resultGroup in results.GroupBy(a => a.PartitionKey))
+            {
+                TableBatchOperation batchOperation = new TableBatchOperation();
+                foreach (var result in resultGroup)
+                {
+                    batchOperation.Delete(result);
+                    deletionCount++;
+                }
+                table.ExecuteBatch(batchOperation);
+            }
+            
+            return deletionCount;
+        }
     }
 }
