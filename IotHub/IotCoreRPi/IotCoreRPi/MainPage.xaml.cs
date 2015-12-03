@@ -175,7 +175,7 @@ namespace IotCoreRPi
             }
             else
             {
-                GpioStatus.Text = "This is no RPi";
+                GpioStatus.Text = "Device Simulator";
                 SimulateDevice = true;
             }
         }
