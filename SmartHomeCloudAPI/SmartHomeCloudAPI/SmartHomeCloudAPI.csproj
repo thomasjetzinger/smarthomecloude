@@ -141,6 +141,7 @@
   <ItemGroup>
     <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Models\SimpleCommand.cs" />
     <Compile Include="Controllers\DeviceController.cs" />
     <Compile Include="Controllers\EventController.cs" />
     <Compile Include="Controllers\ValueController.cs" />
@@ -160,6 +161,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="apiapp.json" />
+    <None Include="Properties\PublishProfiles\smarthomecloud-api - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\smarthomecloud-api - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\smarthomecloud.ApiApp%28smarthomecloud%29.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

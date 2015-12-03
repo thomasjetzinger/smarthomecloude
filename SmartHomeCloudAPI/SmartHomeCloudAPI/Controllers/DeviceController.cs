@@ -44,12 +44,12 @@ namespace SmartHomeCloudAPI.Controllers
 
         [HttpPost]
         [Route("api/Device/{id}")]
-        public async Task<string> PostCommand([FromUri]string id, [FromBody]string command)
+        public async Task<string> PostCommand([FromUri]string id, [FromUri]SimpleCommand command)
         {
 
-            if (!string.IsNullOrEmpty(command))
-                await iotHubExplorer.SendCloudToDeviceMessageAsync(id, command);
-            return command;
+            if (!string.IsNullOrEmpty(command.Action))
+                await iotHubExplorer.SendCloudToDeviceMessageAsync(id, command.Action);
+            return command.Action;
         }
 
     }

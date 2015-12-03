@@ -13,6 +13,8 @@ namespace SmartHomeCloudAPI.Models
         public DateTime? dateTo { get; set; }
         public string displayname { get; set; }
         public string location { get; set; }
+        public string guid { get; set; }
+        public string connectiondeviceid { get; set; }        
         public string measurename { get; set; }
         public string organization { get; set; }
         public long? valueFrom { get; set; }
@@ -39,6 +41,14 @@ namespace SmartHomeCloudAPI.Models
             if (organization != null)
             {
                 filters.Add(TableQuery.GenerateFilterCondition("organization", QueryComparisons.Equal, organization));
+            }
+            if (guid != null)
+            {
+                filters.Add(TableQuery.GenerateFilterCondition("guid", QueryComparisons.Equal, guid));
+            }
+            if (connectiondeviceid != null)
+            {
+                filters.Add(TableQuery.GenerateFilterCondition("connectiondeviceid", QueryComparisons.Equal, connectiondeviceid));
             }
             if (unitofmeasure != null)
             {

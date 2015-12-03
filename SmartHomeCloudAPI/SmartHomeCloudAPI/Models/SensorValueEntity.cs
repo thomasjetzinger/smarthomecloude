@@ -1,22 +1,33 @@
 ﻿using Microsoft.WindowsAzure.Storage.Table;
 using System;
+using System.Runtime.Serialization;
 
 namespace SmartHomeCloudAPI.Data
 {
+    [DataContract]
     public class SensorValueEntity : TableEntity
     {
-
+        [DataMember]       
         public string displayname { get; set; }
-        public string connectiondeviceid { get; set; }        
+        [DataMember]
+        public string connectiondeviceid { get; set; }
+        [DataMember]
         public string guid { get; set; }
+        [DataMember]
         public string location { get; set; }
+        [DataMember]
         public string measurename { get; set; }
+        [DataMember]
         public string organization { get; set; }
-        public DateTime timestamp { get; set; }
+        [DataMember]
         public string unitofmeasure { get; set; }
+        [DataMember]
         public double value { get; set; }
-        public DateTime EventProcessedUtcTime { get; set; }
-        public DateTime EventEnqueuedUtcTime { get; set; }
+        [DataMember]
+        public DateTimeOffset timestamp {
+            get { return Timestamp; }
+            set { Timestamp = timestamp; }
+        }
 
     }
 }
